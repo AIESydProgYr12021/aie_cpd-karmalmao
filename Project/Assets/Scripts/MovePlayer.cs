@@ -6,19 +6,17 @@ using UnityEngine.SceneManagement;
 public class MovePlayer : MonoBehaviour
 {
 
+
     public Rigidbody rb;
-    public float movementSpeed;
+    public float hzMovement;
     public float jumpForce;
     public bool onAndroid = false;
-    public float forwardSpeed = 15;
-    bool deadlmao = false;
-
-    Vector3 localVel;
-
-
+    public bool deadlmao = false;
+    public float speedCap = 20f;
+    public float speed = 12f;
+    public float speedMultiplier = 1f;
 
 
-    [SerializeField] private VirtualJoystick input;
     public bool isGrounded;
 
 
@@ -27,12 +25,11 @@ public class MovePlayer : MonoBehaviour
 
 
 
-    
+
     void Start()
     {
 
         transform.position = new Vector3(15, 2, -25);
-
 
         if (Application.platform == RuntimePlatform.Android)
         {
@@ -44,56 +41,77 @@ public class MovePlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        localVel = rb.velocity;
 
-        localVel.z = 12;
-        localVel.x = Input.GetAxis("Horizontal") * movementSpeed;
 
+        if (Input.GetKey(KeyCode.S))
+        {
+            speedMultiplier = 0.7f;
+        }
+        else
+        {
+            speedMultiplier = 1f;
+        }
+
+
+        Vector3 localVel = rb.velocity;
+
+        if (speed < speedCap)
+        {
+            speed += 0.5f * Time.deltaTime;
+        }
+        localVel.x = Input.GetAxis("Horizontal") * hzMovement;
+        localVel.z = speed * speedMultiplier;
         rb.velocity = localVel;
 
-        while (isGrounded)
-          {
-              if (Input.GetKeyDown(KeyCode.Space))
-              {
-                  rb.AddForce(0, jumpForce, 0);
-              }
-          }
-        
+        if (isGrounded)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                rb.AddForce(0, jumpForce, 0);
+            }
+        }
 
 
 
-        
+
+
         if (onAndroid)
         {
             if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began && isGrounded)
             {
                 rb.AddForce(0, jumpForce, 0);
             }
-            transform.Translate((Input.acceleration.x * movementSpeed * Time.deltaTime) / 2, 0,0);
+            transform.Translate((Input.acceleration.x * hzMovement * Time.deltaTime) / 2, 0, 0);
         }
         if (deadlmao == true)
         {
-            Time.timeScale = 0;
 
-            Debug.Log("get happy");
+
+            //dead menu enabled 
+
+
+            Time.timeScale = 0;
+            SceneManager.LoadScene("Menu");
         }
 
     }
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.layer == 3)
         {
             isGrounded = true;
         }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
         if (collision.gameObject.layer == 6)
         {
             deadlmao = true;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
         }
     }
     private void OnCollisionExit(Collision collision)
     {
-        if(collision.gameObject.layer == 3)
+        if (collision.gameObject.layer == 3)
         {
             isGrounded = false;
         }
