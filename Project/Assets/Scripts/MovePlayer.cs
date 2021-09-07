@@ -43,7 +43,7 @@ public class MovePlayer : MonoBehaviour
     {
 
 
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
         {
             speedMultiplier = 0.7f;
         }

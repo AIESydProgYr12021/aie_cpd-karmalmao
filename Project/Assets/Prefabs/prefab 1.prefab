@@ -7488,7 +7488,7 @@ MonoBehaviour:
   - {fileID: 7762415128299690333}
   - {fileID: 9052573392380007157, guid: 3ea2437bdd57a5643a8a44439feba79c, type: 3}
   - {fileID: 2441616514424363936, guid: 2c821346830800f469b28a9dd97cc202, type: 3}
-  offset: {x: 0, y: 0, z: 0}
+  - {fileID: 3216143642086087463, guid: 8b67771d2b729c449b9456ae8d8eee45, type: 3}
 --- !u!1 &7762415128600976658
 GameObject:
   m_ObjectHideFlags: 0
