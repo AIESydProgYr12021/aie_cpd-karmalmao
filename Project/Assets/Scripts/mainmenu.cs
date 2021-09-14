@@ -7,7 +7,8 @@ public class mainmenu : MonoBehaviour
 {
 
     public bool onAndroid = false;
-
+    public GameObject PCMenu;
+    public GameObject AndroidMenu;
 
     public void PlayGame()
     {
@@ -19,12 +20,24 @@ public class mainmenu : MonoBehaviour
         Debug.Log("thanks brackeys lmao");
         Application.Quit();
     }
-
+    public void SetAndroidActive()
+    {
+        AndroidMenu.SetActive(true);
+        PCMenu.SetActive(false);
+    }
+    public void SetPCActive()
+    {
+        PCMenu.SetActive(true);
+        AndroidMenu.SetActive(false);
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        if(Application.platform == RuntimePlatform.Android)
+        {
+            onAndroid = true;
+        }
     }
 
 
@@ -32,6 +45,10 @@ public class mainmenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (onAndroid)
+        {
+            SetAndroidActive();
+        }
+        else SetPCActive();
     }
 }

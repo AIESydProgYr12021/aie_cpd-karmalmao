@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MovePlayer : MonoBehaviour
 {
+
+
 
 
     public Rigidbody rb;
@@ -15,6 +18,7 @@ public class MovePlayer : MonoBehaviour
     public float speedCap = 20f;
     public float speed = 12f;
     public float speedMultiplier = 1f;
+    public bool able = true;
 
 
     public bool isGrounded;
@@ -42,27 +46,31 @@ public class MovePlayer : MonoBehaviour
     void Update()
     {
 
+        Controls();
+        AndroidControls();
+        SlowDown();
 
-        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+
+
+        if (deadlmao == true)
         {
-            speedMultiplier = 0.7f;
-        }
-        else
-        {
-            speedMultiplier = 1f;
+            //dead menu enabled here <<<<<<<
+            Time.timeScale = 0;
+            SceneManager.LoadScene("Menu");
         }
 
+    }
 
+    public void Controls()
+    {
+        // movement
         Vector3 localVel = rb.velocity;
-
-        if (speed < speedCap)
-        {
-            speed += 0.5f * Time.deltaTime;
-        }
         localVel.x = Input.GetAxis("Horizontal") * hzMovement;
         localVel.z = speed * speedMultiplier;
         rb.velocity = localVel;
 
+
+        //jump
         if (isGrounded)
         {
             if (Input.GetKeyDown(KeyCode.Space))
@@ -71,29 +79,51 @@ public class MovePlayer : MonoBehaviour
             }
         }
 
-
-
-
-
+        if (speed < speedCap)
+        {
+            speed += 0.2f * Time.deltaTime;
+        }
+    }
+    public void AndroidControls()
+    {
         if (onAndroid)
         {
-            if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began && isGrounded)
-            {
-                rb.AddForce(0, jumpForce, 0);
-            }
-            transform.Translate((Input.acceleration.x * hzMovement * Time.deltaTime) / 2, 0, 0);
+            transform.Translate((Input.acceleration.x * hzMovement * Time.deltaTime), 0, 0);
         }
-        if (deadlmao == true)
+    }
+    public void Jump()
+    {
+        if (isGrounded)
         {
-
-
-            //dead menu enabled 
-
-
-            Time.timeScale = 0;
-            SceneManager.LoadScene("Menu");
+            rb.AddForce(0, jumpForce, 0);
         }
+    }
+    public void SlowDown()
+    {
+        if (able)
+        {
+            if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+            {
 
+                if (stamina.instance.currentStamina > 1f)
+                {
+                    speedMultiplier = 0f;
+
+                }
+                stamina.instance.UseStamina(0.1f);
+                if (stamina.instance.currentStamina < 1f)
+                {
+                    able = false;
+                    speedMultiplier = 1f;
+                }
+            }
+            else
+            {
+                speedMultiplier = 1f;
+
+            }
+            able = true;
+        }
     }
     private void OnCollisionStay(Collision collision)
     {

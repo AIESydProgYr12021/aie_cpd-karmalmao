@@ -7838,7 +7838,6 @@ MonoBehaviour:
   blockPrefabs:
   - {fileID: 7762415128299690333, guid: 967e210ef420f7f498b1f827bcc4dcf0, type: 3}
   - {fileID: 9052573392380007157}
-  - {fileID: 2441616514424363936, guid: 2c821346830800f469b28a9dd97cc202, type: 3}
   - {fileID: 3216143642086087463, guid: 8b67771d2b729c449b9456ae8d8eee45, type: 3}
 --- !u!1 &9052573392380007157
 GameObject:
@@ -13230,7 +13229,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9052573393043305084}
-  m_Material: {fileID: 13400000, guid: 70e17b280f27f8d46a67084d956a96ba, type: 2}
+  m_Material: {fileID: 13400000, guid: 44abe041d3d544640b0293ec5eb9386e, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
